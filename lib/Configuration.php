@@ -63,6 +63,34 @@ class Configuration
     protected $tempFolderPath;
     protected $timeout = 120;
 
+    protected $accountExport;
+    protected $accountExports;
+    protected $activityFeed;
+    protected $authorizedApps;
+    protected $automations;
+    protected $batchWebhooks;
+    protected $batches;
+    protected $campaignFolders;
+    protected $campaigns;
+    protected $connectedSites;
+    protected $conversations;
+    protected $customerJourneys;
+    protected $ecommerce;
+    protected $facebookAds;
+    protected $fileManager;
+    protected $landingPages;
+    protected $lists;
+    protected $ping;
+    protected $reporting;
+    protected $reports;
+    protected $root;
+    protected $searchCampaigns;
+    protected $searchMembers;
+    protected $Surveys;
+    protected $templateFolders;
+    protected $templates;
+    protected $verifiedDomains;
+
     public function __construct()
     {
         $this->tempFolderPath = sys_get_temp_dir();
