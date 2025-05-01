@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class ConversationsApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class ConversationsApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class ConversationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class ConversationsApi
         }
     }
 
-    protected function listRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $has_unread_messages = null, $list_id = null, $campaign_id = null)
+    protected function listRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $has_unread_messages = null, $list_id = null, $campaign_id = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling ConversationsApi., must be smaller than or equal to 1000.');
@@ -123,15 +123,13 @@ class ConversationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -226,7 +224,7 @@ class ConversationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -267,7 +265,7 @@ class ConversationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -276,7 +274,7 @@ class ConversationsApi
         }
     }
 
-    protected function getRequest($conversation_id, $fields = null, $exclude_fields = null)
+    protected function getRequest($conversation_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'conversation_id' is set
         if ($conversation_id === null || (is_array($conversation_id) && count($conversation_id) === 0)) {
@@ -294,22 +292,20 @@ class ConversationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($conversation_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'conversation_id' . '}',
+                '{conversation_id}',
                 ObjectSerializer::toPathValue($conversation_id),
                 $resourcePath
             );
@@ -385,7 +381,7 @@ class ConversationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -426,7 +422,7 @@ class ConversationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -435,7 +431,7 @@ class ConversationsApi
         }
     }
 
-    protected function getConversationMessagesRequest($conversation_id, $fields = null, $exclude_fields = null, $is_read = null, $before_timestamp = null, $since_timestamp = null)
+    protected function getConversationMessagesRequest($conversation_id, $fields = null, $exclude_fields = null, $is_read = null, $before_timestamp = null, $since_timestamp = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'conversation_id' is set
         if ($conversation_id === null || (is_array($conversation_id) && count($conversation_id) === 0)) {
@@ -453,15 +449,13 @@ class ConversationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -480,7 +474,7 @@ class ConversationsApi
         // path params
         if ($conversation_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'conversation_id' . '}',
+                '{conversation_id}',
                 ObjectSerializer::toPathValue($conversation_id),
                 $resourcePath
             );
@@ -556,7 +550,7 @@ class ConversationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -597,7 +591,7 @@ class ConversationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -606,7 +600,7 @@ class ConversationsApi
         }
     }
 
-    protected function getConversationMessageRequest($conversation_id, $message_id, $fields = null, $exclude_fields = null)
+    protected function getConversationMessageRequest($conversation_id, $message_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'conversation_id' is set
         if ($conversation_id === null || (is_array($conversation_id) && count($conversation_id) === 0)) {
@@ -630,22 +624,20 @@ class ConversationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($conversation_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'conversation_id' . '}',
+                '{conversation_id}',
                 ObjectSerializer::toPathValue($conversation_id),
                 $resourcePath
             );
@@ -653,7 +645,7 @@ class ConversationsApi
         // path params
         if ($message_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'message_id' . '}',
+                '{message_id}',
                 ObjectSerializer::toPathValue($message_id),
                 $resourcePath
             );
@@ -729,13 +721,16 @@ class ConversationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

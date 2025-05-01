@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class RootApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class RootApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class RootApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class RootApi
         }
     }
 
-    protected function getRootRequest($fields = null, $exclude_fields = null)
+    protected function getRootRequest($fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
 
         $resourcePath = '/';
@@ -119,15 +119,13 @@ class RootApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
@@ -202,13 +200,16 @@ class RootApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

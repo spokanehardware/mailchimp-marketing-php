@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class FileManagerApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,12 +58,12 @@ class FileManagerApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
 
-    public function deleteFile($file_id)
+    public function deleteFile($file_id): void
     {
         $this->deleteFileWithHttpInfo($file_id);
     }
@@ -97,7 +97,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -106,7 +106,7 @@ class FileManagerApi
         }
     }
 
-    protected function deleteFileRequest($file_id)
+    protected function deleteFileRequest($file_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'file_id' is set
         if ($file_id === null || (is_array($file_id) && count($file_id) === 0)) {
@@ -125,7 +125,7 @@ class FileManagerApi
         // path params
         if ($file_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'file_id' . '}',
+                '{file_id}',
                 ObjectSerializer::toPathValue($file_id),
                 $resourcePath
             );
@@ -201,13 +201,13 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteFolder($folder_id)
+    public function deleteFolder($folder_id): void
     {
         $this->deleteFolderWithHttpInfo($folder_id);
     }
@@ -241,7 +241,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -250,7 +250,7 @@ class FileManagerApi
         }
     }
 
-    protected function deleteFolderRequest($folder_id)
+    protected function deleteFolderRequest($folder_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'folder_id' is set
         if ($folder_id === null || (is_array($folder_id) && count($folder_id) === 0)) {
@@ -269,7 +269,7 @@ class FileManagerApi
         // path params
         if ($folder_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'folder_id' . '}',
+                '{folder_id}',
                 ObjectSerializer::toPathValue($folder_id),
                 $resourcePath
             );
@@ -345,7 +345,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -386,7 +386,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -395,7 +395,7 @@ class FileManagerApi
         }
     }
 
-    protected function filesRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $created_by = null, $before_created_at = null, $since_created_at = null, $sort_field = null, $sort_dir = null)
+    protected function filesRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $created_by = null, $before_created_at = null, $since_created_at = null, $sort_field = null, $sort_dir = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling FileManagerApi., must be smaller than or equal to 1000.');
@@ -411,15 +411,13 @@ class FileManagerApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -526,7 +524,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -567,7 +565,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -576,7 +574,7 @@ class FileManagerApi
         }
     }
 
-    protected function getFileRequest($file_id, $fields = null, $exclude_fields = null)
+    protected function getFileRequest($file_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'file_id' is set
         if ($file_id === null || (is_array($file_id) && count($file_id) === 0)) {
@@ -594,22 +592,20 @@ class FileManagerApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($file_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'file_id' . '}',
+                '{file_id}',
                 ObjectSerializer::toPathValue($file_id),
                 $resourcePath
             );
@@ -685,7 +681,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -726,7 +722,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -735,7 +731,7 @@ class FileManagerApi
         }
     }
 
-    protected function listFoldersRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $created_by = null, $before_created_at = null, $since_created_at = null)
+    protected function listFoldersRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $created_by = null, $before_created_at = null, $since_created_at = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling FileManagerApi., must be smaller than or equal to 1000.');
@@ -751,15 +747,13 @@ class FileManagerApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -854,7 +848,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -895,7 +889,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -904,7 +898,7 @@ class FileManagerApi
         }
     }
 
-    protected function getFolderRequest($folder_id, $fields = null, $exclude_fields = null)
+    protected function getFolderRequest($folder_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'folder_id' is set
         if ($folder_id === null || (is_array($folder_id) && count($folder_id) === 0)) {
@@ -922,22 +916,20 @@ class FileManagerApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($folder_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'folder_id' . '}',
+                '{folder_id}',
                 ObjectSerializer::toPathValue($folder_id),
                 $resourcePath
             );
@@ -1013,7 +1005,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1054,7 +1046,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1063,7 +1055,7 @@ class FileManagerApi
         }
     }
 
-    protected function updateFileRequest($file_id, $body)
+    protected function updateFileRequest($file_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'file_id' is set
         if ($file_id === null || (is_array($file_id) && count($file_id) === 0)) {
@@ -1088,7 +1080,7 @@ class FileManagerApi
         // path params
         if ($file_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'file_id' . '}',
+                '{file_id}',
                 ObjectSerializer::toPathValue($file_id),
                 $resourcePath
             );
@@ -1167,7 +1159,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1208,7 +1200,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1217,7 +1209,7 @@ class FileManagerApi
         }
     }
 
-    protected function updateFolderRequest($folder_id, $body)
+    protected function updateFolderRequest($folder_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'folder_id' is set
         if ($folder_id === null || (is_array($folder_id) && count($folder_id) === 0)) {
@@ -1242,7 +1234,7 @@ class FileManagerApi
         // path params
         if ($folder_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'folder_id' . '}',
+                '{folder_id}',
                 ObjectSerializer::toPathValue($folder_id),
                 $resourcePath
             );
@@ -1321,7 +1313,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1362,7 +1354,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1371,7 +1363,7 @@ class FileManagerApi
         }
     }
 
-    protected function uploadRequest($body)
+    protected function uploadRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -1461,7 +1453,7 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1502,7 +1494,7 @@ class FileManagerApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1511,7 +1503,7 @@ class FileManagerApi
         }
     }
 
-    protected function createFolderRequest($body)
+    protected function createFolderRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -1601,13 +1593,16 @@ class FileManagerApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

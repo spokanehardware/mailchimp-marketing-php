@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class VerifiedDomainsApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class VerifiedDomainsApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class VerifiedDomainsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class VerifiedDomainsApi
         }
     }
 
-    protected function createVerifiedDomainRequest($body)
+    protected function createVerifiedDomainRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -197,13 +197,13 @@ class VerifiedDomainsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteDomain($domain_name)
+    public function deleteDomain($domain_name): void
     {
         $this->deleteDomainWithHttpInfo($domain_name);
     }
@@ -237,7 +237,7 @@ class VerifiedDomainsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -246,7 +246,7 @@ class VerifiedDomainsApi
         }
     }
 
-    protected function deleteDomainRequest($domain_name)
+    protected function deleteDomainRequest($domain_name): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'domain_name' is set
         if ($domain_name === null || (is_array($domain_name) && count($domain_name) === 0)) {
@@ -265,7 +265,7 @@ class VerifiedDomainsApi
         // path params
         if ($domain_name !== null) {
             $resourcePath = str_replace(
-                '{' . 'domain_name' . '}',
+                '{domain_name}',
                 ObjectSerializer::toPathValue($domain_name),
                 $resourcePath
             );
@@ -341,7 +341,7 @@ class VerifiedDomainsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -382,7 +382,7 @@ class VerifiedDomainsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -391,7 +391,7 @@ class VerifiedDomainsApi
         }
     }
 
-    protected function getDomainRequest($domain_name)
+    protected function getDomainRequest($domain_name): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'domain_name' is set
         if ($domain_name === null || (is_array($domain_name) && count($domain_name) === 0)) {
@@ -410,7 +410,7 @@ class VerifiedDomainsApi
         // path params
         if ($domain_name !== null) {
             $resourcePath = str_replace(
-                '{' . 'domain_name' . '}',
+                '{domain_name}',
                 ObjectSerializer::toPathValue($domain_name),
                 $resourcePath
             );
@@ -486,7 +486,7 @@ class VerifiedDomainsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -527,7 +527,7 @@ class VerifiedDomainsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -536,7 +536,7 @@ class VerifiedDomainsApi
         }
     }
 
-    protected function getVerifiedDomainsAllRequest()
+    protected function getVerifiedDomainsAllRequest(): \GuzzleHttp\Psr7\Request
     {
 
         $resourcePath = '/verified-domains';
@@ -617,7 +617,7 @@ class VerifiedDomainsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -658,7 +658,7 @@ class VerifiedDomainsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -667,7 +667,7 @@ class VerifiedDomainsApi
         }
     }
 
-    protected function submitDomainVerificationRequest($domain_name, $body)
+    protected function submitDomainVerificationRequest($domain_name, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'domain_name' is set
         if ($domain_name === null || (is_array($domain_name) && count($domain_name) === 0)) {
@@ -692,7 +692,7 @@ class VerifiedDomainsApi
         // path params
         if ($domain_name !== null) {
             $resourcePath = str_replace(
-                '{' . 'domain_name' . '}',
+                '{domain_name}',
                 ObjectSerializer::toPathValue($domain_name),
                 $resourcePath
             );
@@ -771,13 +771,16 @@ class VerifiedDomainsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

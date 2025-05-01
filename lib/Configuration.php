@@ -49,7 +49,7 @@ use MailchimpMarketing\Api\VerifiedDomainsApi;
 
 class Configuration
 {
-    private static $defaultConfiguration;
+    private static ?\MailchimpMarketing\Configuration $defaultConfiguration = null;
 
     protected $apiKeys = [];
     protected $apiKeyPrefixes = [];
@@ -60,7 +60,7 @@ class Configuration
     protected $userAgent = 'Swagger-Codegen/3.0.80/php';
     protected $debug = false;
     protected $debugFile = 'php://output';
-    protected $tempFolderPath;
+    protected string $tempFolderPath;
     protected $timeout = 120;
 
     public AccountExportApi $accountExport;
@@ -124,11 +124,11 @@ class Configuration
         $this->verifiedDomains = new VerifiedDomainsApi($this);
     }
 
-    public function setConfig($config = array())
+    public function setConfig($config = []): static
     {
-        $apiKey = isset($config['apiKey']) ? $config['apiKey'] : '';
-        $accessToken = isset($config['accessToken']) ? $config['accessToken'] : '';
-        $server = isset($config['server']) ? $config['server'] : 'invalid-server';
+        $apiKey = $config['apiKey'] ?? '';
+        $accessToken = $config['accessToken'] ?? '';
+        $server = $config['server'] ?? 'invalid-server';
         $host = str_replace('server', $server, $this->getHost());
 
         // Basic Authentication
@@ -151,7 +151,7 @@ class Configuration
         return $this;
     }
 
-    public function setApiKey($apiKeyIdentifier, $key)
+    public function setApiKey($apiKeyIdentifier, $key): static
     {
         $this->apiKeys[$apiKeyIdentifier] = $key;
         return $this;
@@ -159,10 +159,10 @@ class Configuration
 
     public function getApiKey($apiKeyIdentifier)
     {
-        return isset($this->apiKeys[$apiKeyIdentifier]) ? $this->apiKeys[$apiKeyIdentifier] : null;
+        return $this->apiKeys[$apiKeyIdentifier] ?? null;
     }
 
-    public function setApiKeyPrefix($apiKeyIdentifier, $prefix)
+    public function setApiKeyPrefix($apiKeyIdentifier, $prefix): static
     {
         $this->apiKeyPrefixes[$apiKeyIdentifier] = $prefix;
         return $this;
@@ -170,10 +170,10 @@ class Configuration
 
     public function getApiKeyPrefix($apiKeyIdentifier)
     {
-        return isset($this->apiKeyPrefixes[$apiKeyIdentifier]) ? $this->apiKeyPrefixes[$apiKeyIdentifier] : null;
+        return $this->apiKeyPrefixes[$apiKeyIdentifier] ?? null;
     }
 
-    public function setAccessToken($accessToken)
+    public function setAccessToken($accessToken): static
     {
         $this->accessToken = $accessToken;
         return $this;
@@ -184,7 +184,7 @@ class Configuration
         return $this->accessToken;
     }
 
-    public function setUsername($username)
+    public function setUsername($username): static
     {
         $this->username = $username;
         return $this;
@@ -195,7 +195,7 @@ class Configuration
         return $this->username;
     }
 
-    public function setPassword($password)
+    public function setPassword($password): static
     {
         $this->password = $password;
         return $this;
@@ -206,7 +206,7 @@ class Configuration
         return $this->password;
     }
 
-    public function setHost($host)
+    public function setHost($host): static
     {
         $this->host = $host;
         return $this;
@@ -217,7 +217,7 @@ class Configuration
         return $this->host;
     }
 
-    public function setUserAgent($userAgent)
+    public function setUserAgent($userAgent): static
     {
         if (!is_string($userAgent)) {
             throw new \InvalidArgumentException('User-agent must be a string.');
@@ -232,7 +232,7 @@ class Configuration
         return $this->userAgent;
     }
 
-    public function setDebug($debug)
+    public function setDebug($debug): static
     {
         $this->debug = $debug;
         return $this;
@@ -243,7 +243,7 @@ class Configuration
         return $this->debug;
     }
 
-    public function setDebugFile($debugFile)
+    public function setDebugFile($debugFile): static
     {
         $this->debugFile = $debugFile;
         return $this;
@@ -254,18 +254,18 @@ class Configuration
         return $this->debugFile;
     }
 
-    public function setTempFolderPath($tempFolderPath)
+    public function setTempFolderPath(string $tempFolderPath): static
     {
         $this->tempFolderPath = $tempFolderPath;
         return $this;
     }
 
-    public function getTempFolderPath()
+    public function getTempFolderPath(): string
     {
         return $this->tempFolderPath;
     }
 
-    public function setTimeout($timeout)
+    public function setTimeout($timeout): void
     {
         $this->timeout = $timeout;
     }
@@ -275,21 +275,21 @@ class Configuration
         return $this->timeout;
     }
 
-    public static function getDefaultConfiguration()
+    public static function getDefaultConfiguration(): \MailchimpMarketing\Configuration
     {
-        if (self::$defaultConfiguration === null) {
+        if (!self::$defaultConfiguration instanceof \MailchimpMarketing\Configuration) {
             self::$defaultConfiguration = new Configuration();
         }
 
         return self::$defaultConfiguration;
     }
 
-    public static function setDefaultConfiguration(Configuration $config)
+    public static function setDefaultConfiguration(Configuration $config): void
     {
         self::$defaultConfiguration = $config;
     }
 
-    public static function toDebugReport()
+    public static function toDebugReport(): string
     {
         $report  = 'PHP SDK (MailchimpMarketing) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
@@ -310,11 +310,7 @@ class Configuration
             return null;
         }
 
-        if ($prefix === null) {
-            $keyWithPrefix = $apiKey;
-        } else {
-            $keyWithPrefix = $prefix . ' ' . $apiKey;
-        }
+        $keyWithPrefix = $prefix === null ? $apiKey : $prefix . ' ' . $apiKey;
 
         return $keyWithPrefix;
     }

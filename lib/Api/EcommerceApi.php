@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class EcommerceApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class EcommerceApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteStoreRequest($store_id)
+    protected function deleteStoreRequest($store_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -126,7 +126,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -202,13 +202,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteStoreCart($store_id, $cart_id)
+    public function deleteStoreCart($store_id, $cart_id): void
     {
         $this->deleteStoreCartWithHttpInfo($store_id, $cart_id);
     }
@@ -242,7 +242,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -251,7 +251,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteStoreCartRequest($store_id, $cart_id)
+    protected function deleteStoreCartRequest($store_id, $cart_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -276,7 +276,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -284,7 +284,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -360,13 +360,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteCartLineItem($store_id, $cart_id, $line_id)
+    public function deleteCartLineItem($store_id, $cart_id, $line_id): void
     {
         $this->deleteCartLineItemWithHttpInfo($store_id, $cart_id, $line_id);
     }
@@ -400,7 +400,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -409,7 +409,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteCartLineItemRequest($store_id, $cart_id, $line_id)
+    protected function deleteCartLineItemRequest($store_id, $cart_id, $line_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -440,7 +440,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -448,7 +448,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -456,7 +456,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -532,13 +532,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteStoreCustomer($store_id, $customer_id)
+    public function deleteStoreCustomer($store_id, $customer_id): void
     {
         $this->deleteStoreCustomerWithHttpInfo($store_id, $customer_id);
     }
@@ -572,7 +572,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -581,7 +581,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteStoreCustomerRequest($store_id, $customer_id)
+    protected function deleteStoreCustomerRequest($store_id, $customer_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -606,7 +606,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -614,7 +614,7 @@ class EcommerceApi
         // path params
         if ($customer_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'customer_id' . '}',
+                '{customer_id}',
                 ObjectSerializer::toPathValue($customer_id),
                 $resourcePath
             );
@@ -690,13 +690,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteOrder($store_id, $order_id)
+    public function deleteOrder($store_id, $order_id): void
     {
         $this->deleteOrderWithHttpInfo($store_id, $order_id);
     }
@@ -730,7 +730,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -739,7 +739,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteOrderRequest($store_id, $order_id)
+    protected function deleteOrderRequest($store_id, $order_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -764,7 +764,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -772,7 +772,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -848,13 +848,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteOrderLineItem($store_id, $order_id, $line_id)
+    public function deleteOrderLineItem($store_id, $order_id, $line_id): void
     {
         $this->deleteOrderLineItemWithHttpInfo($store_id, $order_id, $line_id);
     }
@@ -888,7 +888,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -897,7 +897,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteOrderLineItemRequest($store_id, $order_id, $line_id)
+    protected function deleteOrderLineItemRequest($store_id, $order_id, $line_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -928,7 +928,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -936,7 +936,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -944,7 +944,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -1020,13 +1020,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteStoreProduct($store_id, $product_id)
+    public function deleteStoreProduct($store_id, $product_id): void
     {
         $this->deleteStoreProductWithHttpInfo($store_id, $product_id);
     }
@@ -1060,7 +1060,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1069,7 +1069,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteStoreProductRequest($store_id, $product_id)
+    protected function deleteStoreProductRequest($store_id, $product_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -1094,7 +1094,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -1102,7 +1102,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -1178,13 +1178,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteProductImage($store_id, $product_id, $image_id)
+    public function deleteProductImage($store_id, $product_id, $image_id): void
     {
         $this->deleteProductImageWithHttpInfo($store_id, $product_id, $image_id);
     }
@@ -1218,7 +1218,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1227,7 +1227,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteProductImageRequest($store_id, $product_id, $image_id)
+    protected function deleteProductImageRequest($store_id, $product_id, $image_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -1258,7 +1258,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -1266,7 +1266,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -1274,7 +1274,7 @@ class EcommerceApi
         // path params
         if ($image_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'image_id' . '}',
+                '{image_id}',
                 ObjectSerializer::toPathValue($image_id),
                 $resourcePath
             );
@@ -1350,13 +1350,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteProductVariant($store_id, $product_id, $variant_id)
+    public function deleteProductVariant($store_id, $product_id, $variant_id): void
     {
         $this->deleteProductVariantWithHttpInfo($store_id, $product_id, $variant_id);
     }
@@ -1390,7 +1390,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1399,7 +1399,7 @@ class EcommerceApi
         }
     }
 
-    protected function deleteProductVariantRequest($store_id, $product_id, $variant_id)
+    protected function deleteProductVariantRequest($store_id, $product_id, $variant_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -1430,7 +1430,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -1438,7 +1438,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -1446,7 +1446,7 @@ class EcommerceApi
         // path params
         if ($variant_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'variant_id' . '}',
+                '{variant_id}',
                 ObjectSerializer::toPathValue($variant_id),
                 $resourcePath
             );
@@ -1522,13 +1522,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deletePromoCode($store_id, $promo_rule_id, $promo_code_id)
+    public function deletePromoCode($store_id, $promo_rule_id, $promo_code_id): void
     {
         $this->deletePromoCodeWithHttpInfo($store_id, $promo_rule_id, $promo_code_id);
     }
@@ -1562,7 +1562,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1571,7 +1571,7 @@ class EcommerceApi
         }
     }
 
-    protected function deletePromoCodeRequest($store_id, $promo_rule_id, $promo_code_id)
+    protected function deletePromoCodeRequest($store_id, $promo_rule_id, $promo_code_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -1602,7 +1602,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -1610,7 +1610,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -1618,7 +1618,7 @@ class EcommerceApi
         // path params
         if ($promo_code_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_code_id' . '}',
+                '{promo_code_id}',
                 ObjectSerializer::toPathValue($promo_code_id),
                 $resourcePath
             );
@@ -1694,13 +1694,13 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deletePromoRule($store_id, $promo_rule_id)
+    public function deletePromoRule($store_id, $promo_rule_id): void
     {
         $this->deletePromoRuleWithHttpInfo($store_id, $promo_rule_id);
     }
@@ -1734,7 +1734,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1743,7 +1743,7 @@ class EcommerceApi
         }
     }
 
-    protected function deletePromoRuleRequest($store_id, $promo_rule_id)
+    protected function deletePromoRuleRequest($store_id, $promo_rule_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -1768,7 +1768,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -1776,7 +1776,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -1852,7 +1852,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1893,7 +1893,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1902,7 +1902,7 @@ class EcommerceApi
         }
     }
 
-    protected function ordersRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $campaign_id = null, $outreach_id = null, $customer_id = null, $has_outreach = null)
+    protected function ordersRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $campaign_id = null, $outreach_id = null, $customer_id = null, $has_outreach = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling EcommerceApi., must be smaller than or equal to 1000.');
@@ -1918,15 +1918,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2025,7 +2023,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2066,7 +2064,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2075,7 +2073,7 @@ class EcommerceApi
         }
     }
 
-    protected function storesRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function storesRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling EcommerceApi., must be smaller than or equal to 1000.');
@@ -2091,15 +2089,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2182,7 +2178,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2223,7 +2219,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2232,7 +2228,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreRequest($store_id, $fields = null, $exclude_fields = null)
+    protected function getStoreRequest($store_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -2250,22 +2246,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -2341,7 +2335,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2382,7 +2376,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2391,7 +2385,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreCartsRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getStoreCartsRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -2413,15 +2407,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2436,7 +2428,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -2512,7 +2504,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2553,7 +2545,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2562,7 +2554,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreCartRequest($store_id, $cart_id, $fields = null, $exclude_fields = null)
+    protected function getStoreCartRequest($store_id, $cart_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -2586,22 +2578,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -2609,7 +2599,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -2685,7 +2675,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2726,7 +2716,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2735,7 +2725,7 @@ class EcommerceApi
         }
     }
 
-    protected function getAllCartLineItemsRequest($store_id, $cart_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getAllCartLineItemsRequest($store_id, $cart_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -2763,15 +2753,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2786,7 +2774,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -2794,7 +2782,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -2870,7 +2858,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2911,7 +2899,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2920,7 +2908,7 @@ class EcommerceApi
         }
     }
 
-    protected function getCartLineItemRequest($store_id, $cart_id, $line_id, $fields = null, $exclude_fields = null)
+    protected function getCartLineItemRequest($store_id, $cart_id, $line_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -2950,22 +2938,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -2973,7 +2959,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -2981,7 +2967,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -3057,7 +3043,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3098,7 +3084,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3107,7 +3093,7 @@ class EcommerceApi
         }
     }
 
-    protected function getAllStoreCustomersRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $email_address = null)
+    protected function getAllStoreCustomersRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $email_address = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -3129,15 +3115,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -3156,7 +3140,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -3232,7 +3216,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3273,7 +3257,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3282,7 +3266,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreCustomerRequest($store_id, $customer_id, $fields = null, $exclude_fields = null)
+    protected function getStoreCustomerRequest($store_id, $customer_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -3306,22 +3290,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -3329,7 +3311,7 @@ class EcommerceApi
         // path params
         if ($customer_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'customer_id' . '}',
+                '{customer_id}',
                 ObjectSerializer::toPathValue($customer_id),
                 $resourcePath
             );
@@ -3405,7 +3387,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3446,7 +3428,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3455,7 +3437,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreOrdersRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $customer_id = null, $has_outreach = null, $campaign_id = null, $outreach_id = null)
+    protected function getStoreOrdersRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $customer_id = null, $has_outreach = null, $campaign_id = null, $outreach_id = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -3477,15 +3459,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -3516,7 +3496,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -3592,7 +3572,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3633,7 +3613,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3642,7 +3622,7 @@ class EcommerceApi
         }
     }
 
-    protected function getOrderRequest($store_id, $order_id, $fields = null, $exclude_fields = null)
+    protected function getOrderRequest($store_id, $order_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -3666,22 +3646,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -3689,7 +3667,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -3765,7 +3743,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3806,7 +3784,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3815,7 +3793,7 @@ class EcommerceApi
         }
     }
 
-    protected function getAllOrderLineItemsRequest($store_id, $order_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getAllOrderLineItemsRequest($store_id, $order_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -3843,15 +3821,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -3866,7 +3842,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -3874,7 +3850,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -3950,7 +3926,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3991,7 +3967,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4000,7 +3976,7 @@ class EcommerceApi
         }
     }
 
-    protected function getOrderLineItemRequest($store_id, $order_id, $line_id, $fields = null, $exclude_fields = null)
+    protected function getOrderLineItemRequest($store_id, $order_id, $line_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4030,22 +4006,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4053,7 +4027,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -4061,7 +4035,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -4137,7 +4111,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4178,7 +4152,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4187,7 +4161,7 @@ class EcommerceApi
         }
     }
 
-    protected function getAllStoreProductsRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getAllStoreProductsRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4209,15 +4183,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -4232,7 +4204,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4308,7 +4280,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4349,7 +4321,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4358,7 +4330,7 @@ class EcommerceApi
         }
     }
 
-    protected function getStoreProductRequest($store_id, $product_id, $fields = null, $exclude_fields = null)
+    protected function getStoreProductRequest($store_id, $product_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4382,22 +4354,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4405,7 +4375,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -4481,7 +4451,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4522,7 +4492,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4531,7 +4501,7 @@ class EcommerceApi
         }
     }
 
-    protected function getProductImagesRequest($store_id, $product_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getProductImagesRequest($store_id, $product_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4559,15 +4529,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -4582,7 +4550,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4590,7 +4558,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -4666,7 +4634,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4707,7 +4675,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4716,7 +4684,7 @@ class EcommerceApi
         }
     }
 
-    protected function getProductImageRequest($store_id, $product_id, $image_id, $fields = null, $exclude_fields = null)
+    protected function getProductImageRequest($store_id, $product_id, $image_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4746,22 +4714,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4769,7 +4735,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -4777,7 +4743,7 @@ class EcommerceApi
         // path params
         if ($image_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'image_id' . '}',
+                '{image_id}',
                 ObjectSerializer::toPathValue($image_id),
                 $resourcePath
             );
@@ -4853,7 +4819,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4894,7 +4860,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4903,7 +4869,7 @@ class EcommerceApi
         }
     }
 
-    protected function getProductVariantsRequest($store_id, $product_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getProductVariantsRequest($store_id, $product_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -4931,15 +4897,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -4954,7 +4918,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -4962,7 +4926,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -5038,7 +5002,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5079,7 +5043,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5088,7 +5052,7 @@ class EcommerceApi
         }
     }
 
-    protected function getProductVariantRequest($store_id, $product_id, $variant_id, $fields = null, $exclude_fields = null)
+    protected function getProductVariantRequest($store_id, $product_id, $variant_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -5118,22 +5082,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -5141,7 +5103,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -5149,7 +5111,7 @@ class EcommerceApi
         // path params
         if ($variant_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'variant_id' . '}',
+                '{variant_id}',
                 ObjectSerializer::toPathValue($variant_id),
                 $resourcePath
             );
@@ -5225,7 +5187,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5266,7 +5228,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5275,7 +5237,7 @@ class EcommerceApi
         }
     }
 
-    protected function getPromoCodesRequest($promo_rule_id, $store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getPromoCodesRequest($promo_rule_id, $store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'promo_rule_id' is set
         if ($promo_rule_id === null || (is_array($promo_rule_id) && count($promo_rule_id) === 0)) {
@@ -5303,15 +5265,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -5326,7 +5286,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -5334,7 +5294,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -5410,7 +5370,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5451,7 +5411,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5460,7 +5420,7 @@ class EcommerceApi
         }
     }
 
-    protected function getPromoCodeRequest($store_id, $promo_rule_id, $promo_code_id, $fields = null, $exclude_fields = null)
+    protected function getPromoCodeRequest($store_id, $promo_rule_id, $promo_code_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -5490,22 +5450,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -5513,7 +5471,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -5521,7 +5479,7 @@ class EcommerceApi
         // path params
         if ($promo_code_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_code_id' . '}',
+                '{promo_code_id}',
                 ObjectSerializer::toPathValue($promo_code_id),
                 $resourcePath
             );
@@ -5597,7 +5555,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5638,7 +5596,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5647,7 +5605,7 @@ class EcommerceApi
         }
     }
 
-    protected function listPromoRulesRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function listPromoRulesRequest($store_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -5669,15 +5627,13 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -5692,7 +5648,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -5768,7 +5724,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5809,7 +5765,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5818,7 +5774,7 @@ class EcommerceApi
         }
     }
 
-    protected function getPromoRuleRequest($store_id, $promo_rule_id, $fields = null, $exclude_fields = null)
+    protected function getPromoRuleRequest($store_id, $promo_rule_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -5842,22 +5798,20 @@ class EcommerceApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -5865,7 +5819,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -5941,7 +5895,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5982,7 +5936,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5991,7 +5945,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateStoreRequest($store_id, $body)
+    protected function updateStoreRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6016,7 +5970,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6095,7 +6049,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6136,7 +6090,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6145,7 +6099,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateStoreCartRequest($store_id, $cart_id, $body)
+    protected function updateStoreCartRequest($store_id, $cart_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6176,7 +6130,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6184,7 +6138,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -6263,7 +6217,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6304,7 +6258,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6313,7 +6267,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateCartLineItemRequest($store_id, $cart_id, $line_id, $body)
+    protected function updateCartLineItemRequest($store_id, $cart_id, $line_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6350,7 +6304,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6358,7 +6312,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -6366,7 +6320,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -6445,7 +6399,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6486,7 +6440,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6495,7 +6449,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateStoreCustomerRequest($store_id, $customer_id, $body)
+    protected function updateStoreCustomerRequest($store_id, $customer_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6526,7 +6480,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6534,7 +6488,7 @@ class EcommerceApi
         // path params
         if ($customer_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'customer_id' . '}',
+                '{customer_id}',
                 ObjectSerializer::toPathValue($customer_id),
                 $resourcePath
             );
@@ -6613,7 +6567,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6654,7 +6608,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6663,7 +6617,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateOrderRequest($store_id, $order_id, $body)
+    protected function updateOrderRequest($store_id, $order_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6694,7 +6648,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6702,7 +6656,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -6781,7 +6735,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6822,7 +6776,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6831,7 +6785,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateOrderLineItemRequest($store_id, $order_id, $line_id, $body)
+    protected function updateOrderLineItemRequest($store_id, $order_id, $line_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -6868,7 +6822,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -6876,7 +6830,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -6884,7 +6838,7 @@ class EcommerceApi
         // path params
         if ($line_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'line_id' . '}',
+                '{line_id}',
                 ObjectSerializer::toPathValue($line_id),
                 $resourcePath
             );
@@ -6963,7 +6917,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7004,7 +6958,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7013,7 +6967,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateStoreProductRequest($store_id, $product_id, $body)
+    protected function updateStoreProductRequest($store_id, $product_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -7044,7 +6998,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -7052,7 +7006,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -7131,7 +7085,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7172,7 +7126,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7181,7 +7135,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateProductImageRequest($store_id, $product_id, $image_id, $body)
+    protected function updateProductImageRequest($store_id, $product_id, $image_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -7218,7 +7172,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -7226,7 +7180,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -7234,7 +7188,7 @@ class EcommerceApi
         // path params
         if ($image_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'image_id' . '}',
+                '{image_id}',
                 ObjectSerializer::toPathValue($image_id),
                 $resourcePath
             );
@@ -7313,7 +7267,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7354,7 +7308,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7363,7 +7317,7 @@ class EcommerceApi
         }
     }
 
-    protected function updateProductVariantRequest($store_id, $product_id, $variant_id, $body)
+    protected function updateProductVariantRequest($store_id, $product_id, $variant_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -7400,7 +7354,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -7408,7 +7362,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -7416,7 +7370,7 @@ class EcommerceApi
         // path params
         if ($variant_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'variant_id' . '}',
+                '{variant_id}',
                 ObjectSerializer::toPathValue($variant_id),
                 $resourcePath
             );
@@ -7495,7 +7449,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7536,7 +7490,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7545,7 +7499,7 @@ class EcommerceApi
         }
     }
 
-    protected function updatePromoCodeRequest($store_id, $promo_rule_id, $promo_code_id, $body)
+    protected function updatePromoCodeRequest($store_id, $promo_rule_id, $promo_code_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -7582,7 +7536,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -7590,7 +7544,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -7598,7 +7552,7 @@ class EcommerceApi
         // path params
         if ($promo_code_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_code_id' . '}',
+                '{promo_code_id}',
                 ObjectSerializer::toPathValue($promo_code_id),
                 $resourcePath
             );
@@ -7677,7 +7631,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7718,7 +7672,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7727,7 +7681,7 @@ class EcommerceApi
         }
     }
 
-    protected function updatePromoRuleRequest($store_id, $promo_rule_id, $body)
+    protected function updatePromoRuleRequest($store_id, $promo_rule_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -7758,7 +7712,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -7766,7 +7720,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -7845,7 +7799,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7886,7 +7840,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7895,7 +7849,7 @@ class EcommerceApi
         }
     }
 
-    protected function addStoreRequest($body)
+    protected function addStoreRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -7985,7 +7939,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8026,7 +7980,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8035,7 +7989,7 @@ class EcommerceApi
         }
     }
 
-    protected function addStoreCartRequest($store_id, $body)
+    protected function addStoreCartRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8060,7 +8014,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8139,7 +8093,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8180,7 +8134,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8189,7 +8143,7 @@ class EcommerceApi
         }
     }
 
-    protected function addCartLineItemRequest($store_id, $cart_id, $body)
+    protected function addCartLineItemRequest($store_id, $cart_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8220,7 +8174,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8228,7 +8182,7 @@ class EcommerceApi
         // path params
         if ($cart_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'cart_id' . '}',
+                '{cart_id}',
                 ObjectSerializer::toPathValue($cart_id),
                 $resourcePath
             );
@@ -8307,7 +8261,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8348,7 +8302,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8357,7 +8311,7 @@ class EcommerceApi
         }
     }
 
-    protected function addStoreCustomerRequest($store_id, $body)
+    protected function addStoreCustomerRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8382,7 +8336,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8461,7 +8415,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8502,7 +8456,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8511,7 +8465,7 @@ class EcommerceApi
         }
     }
 
-    protected function addStoreOrderRequest($store_id, $body)
+    protected function addStoreOrderRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8536,7 +8490,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8615,7 +8569,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8656,7 +8610,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8665,7 +8619,7 @@ class EcommerceApi
         }
     }
 
-    protected function addOrderLineItemRequest($store_id, $order_id, $body)
+    protected function addOrderLineItemRequest($store_id, $order_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8696,7 +8650,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8704,7 +8658,7 @@ class EcommerceApi
         // path params
         if ($order_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'order_id' . '}',
+                '{order_id}',
                 ObjectSerializer::toPathValue($order_id),
                 $resourcePath
             );
@@ -8783,7 +8737,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8824,7 +8778,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8833,7 +8787,7 @@ class EcommerceApi
         }
     }
 
-    protected function addStoreProductRequest($store_id, $body)
+    protected function addStoreProductRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -8858,7 +8812,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -8937,7 +8891,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8978,7 +8932,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8987,7 +8941,7 @@ class EcommerceApi
         }
     }
 
-    protected function addProductImageRequest($store_id, $product_id, $body)
+    protected function addProductImageRequest($store_id, $product_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9018,7 +8972,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9026,7 +8980,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -9105,7 +9059,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9146,7 +9100,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9155,7 +9109,7 @@ class EcommerceApi
         }
     }
 
-    protected function addProductVariantsRequest($store_id, $product_id, $body)
+    protected function addProductVariantsRequest($store_id, $product_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9186,7 +9140,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9194,7 +9148,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -9273,7 +9227,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9314,7 +9268,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9323,7 +9277,7 @@ class EcommerceApi
         }
     }
 
-    protected function addPromoCodeRequest($store_id, $promo_rule_id, $body)
+    protected function addPromoCodeRequest($store_id, $promo_rule_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9354,7 +9308,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9362,7 +9316,7 @@ class EcommerceApi
         // path params
         if ($promo_rule_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'promo_rule_id' . '}',
+                '{promo_rule_id}',
                 ObjectSerializer::toPathValue($promo_rule_id),
                 $resourcePath
             );
@@ -9441,7 +9395,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9482,7 +9436,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9491,7 +9445,7 @@ class EcommerceApi
         }
     }
 
-    protected function addPromoRulesRequest($store_id, $body)
+    protected function addPromoRulesRequest($store_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9516,7 +9470,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9595,7 +9549,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9636,7 +9590,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9645,7 +9599,7 @@ class EcommerceApi
         }
     }
 
-    protected function setStoreCustomerRequest($store_id, $customer_id, $body)
+    protected function setStoreCustomerRequest($store_id, $customer_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9676,7 +9630,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9684,7 +9638,7 @@ class EcommerceApi
         // path params
         if ($customer_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'customer_id' . '}',
+                '{customer_id}',
                 ObjectSerializer::toPathValue($customer_id),
                 $resourcePath
             );
@@ -9763,7 +9717,7 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PUT',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9804,7 +9758,7 @@ class EcommerceApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9813,7 +9767,7 @@ class EcommerceApi
         }
     }
 
-    protected function addProductVariantRequest($store_id, $product_id, $variant_id, $body)
+    protected function addProductVariantRequest($store_id, $product_id, $variant_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'store_id' is set
         if ($store_id === null || (is_array($store_id) && count($store_id) === 0)) {
@@ -9850,7 +9804,7 @@ class EcommerceApi
         // path params
         if ($store_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'store_id' . '}',
+                '{store_id}',
                 ObjectSerializer::toPathValue($store_id),
                 $resourcePath
             );
@@ -9858,7 +9812,7 @@ class EcommerceApi
         // path params
         if ($product_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'product_id' . '}',
+                '{product_id}',
                 ObjectSerializer::toPathValue($product_id),
                 $resourcePath
             );
@@ -9866,7 +9820,7 @@ class EcommerceApi
         // path params
         if ($variant_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'variant_id' . '}',
+                '{variant_id}',
                 ObjectSerializer::toPathValue($variant_id),
                 $resourcePath
             );
@@ -9945,13 +9899,16 @@ class EcommerceApi
         $query = Query::build($queryParams);
         return new Request(
             'PUT',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

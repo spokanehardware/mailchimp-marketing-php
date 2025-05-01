@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class ReportingApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class ReportingApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class ReportingApi
         }
     }
 
-    protected function getFacebookAdsReportAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null)
+    protected function getFacebookAdsReportAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling ReportingApi., must be smaller than or equal to 1000.');
@@ -123,15 +123,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -222,7 +220,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -263,7 +261,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -272,7 +270,7 @@ class ReportingApi
         }
     }
 
-    protected function getFacebookAdReportRequest($outreach_id, $fields = null, $exclude_fields = null)
+    protected function getFacebookAdReportRequest($outreach_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -290,22 +288,20 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -381,7 +377,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -422,7 +418,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -431,7 +427,7 @@ class ReportingApi
         }
     }
 
-    protected function getFacebookAdProductActivityReportRequest($outreach_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null)
+    protected function getFacebookAdProductActivityReportRequest($outreach_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -453,15 +449,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -480,7 +474,7 @@ class ReportingApi
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -556,7 +550,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -597,7 +591,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -606,7 +600,7 @@ class ReportingApi
         }
     }
 
-    protected function getLandingPageReportsAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getLandingPageReportsAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling ReportingApi., must be smaller than or equal to 1000.');
@@ -622,15 +616,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -713,7 +705,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -754,7 +746,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -763,7 +755,7 @@ class ReportingApi
         }
     }
 
-    protected function getLandingPageReportRequest($outreach_id, $fields = null, $exclude_fields = null)
+    protected function getLandingPageReportRequest($outreach_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -781,22 +773,20 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -872,7 +862,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -913,7 +903,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -922,7 +912,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyReportsAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getSurveyReportsAllRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling ReportingApi., must be smaller than or equal to 1000.');
@@ -938,15 +928,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1029,7 +1017,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1070,7 +1058,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1079,7 +1067,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyReportRequest($outreach_id, $fields = null, $exclude_fields = null)
+    protected function getSurveyReportRequest($outreach_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1097,22 +1085,20 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1188,7 +1174,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1229,7 +1215,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1238,7 +1224,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyQuestionReportsAllRequest($outreach_id, $fields = null, $exclude_fields = null)
+    protected function getSurveyQuestionReportsAllRequest($outreach_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1256,22 +1242,20 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1347,7 +1331,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1388,7 +1372,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1397,7 +1381,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyQuestionReportRequest($outreach_id, $question_id, $fields = null, $exclude_fields = null)
+    protected function getSurveyQuestionReportRequest($outreach_id, $question_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1421,22 +1405,20 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1444,7 +1426,7 @@ class ReportingApi
         // path params
         if ($question_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'question_id' . '}',
+                '{question_id}',
                 ObjectSerializer::toPathValue($question_id),
                 $resourcePath
             );
@@ -1520,7 +1502,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1561,7 +1543,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1570,7 +1552,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyQuestionAnswersRequest($outreach_id, $question_id, $fields = null, $exclude_fields = null, $respondent_familiarity_is = null)
+    protected function getSurveyQuestionAnswersRequest($outreach_id, $question_id, $fields = null, $exclude_fields = null, $respondent_familiarity_is = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1594,15 +1576,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1613,7 +1593,7 @@ class ReportingApi
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1621,7 +1601,7 @@ class ReportingApi
         // path params
         if ($question_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'question_id' . '}',
+                '{question_id}',
                 ObjectSerializer::toPathValue($question_id),
                 $resourcePath
             );
@@ -1697,7 +1677,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1738,7 +1718,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1747,7 +1727,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyResponsesAllRequest($outreach_id, $fields = null, $exclude_fields = null, $answered_question = null, $chose_answer = null, $respondent_familiarity_is = null)
+    protected function getSurveyResponsesAllRequest($outreach_id, $fields = null, $exclude_fields = null, $answered_question = null, $chose_answer = null, $respondent_familiarity_is = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1765,15 +1745,13 @@ class ReportingApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1792,7 +1770,7 @@ class ReportingApi
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1868,7 +1846,7 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1909,7 +1887,7 @@ class ReportingApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1918,7 +1896,7 @@ class ReportingApi
         }
     }
 
-    protected function getSurveyResponseRequest($outreach_id, $response_id)
+    protected function getSurveyResponseRequest($outreach_id, $response_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'outreach_id' is set
         if ($outreach_id === null || (is_array($outreach_id) && count($outreach_id) === 0)) {
@@ -1943,7 +1921,7 @@ class ReportingApi
         // path params
         if ($outreach_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'outreach_id' . '}',
+                '{outreach_id}',
                 ObjectSerializer::toPathValue($outreach_id),
                 $resourcePath
             );
@@ -1951,7 +1929,7 @@ class ReportingApi
         // path params
         if ($response_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'response_id' . '}',
+                '{response_id}',
                 ObjectSerializer::toPathValue($response_id),
                 $resourcePath
             );
@@ -2027,13 +2005,16 @@ class ReportingApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class ListsApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,12 +58,12 @@ class ListsApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
 
-    public function deleteList($list_id)
+    public function deleteList($list_id): void
     {
         $this->deleteListWithHttpInfo($list_id);
     }
@@ -97,7 +97,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -106,7 +106,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListRequest($list_id)
+    protected function deleteListRequest($list_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -125,7 +125,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -201,13 +201,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteInterestCategory($list_id, $interest_category_id)
+    public function deleteInterestCategory($list_id, $interest_category_id): void
     {
         $this->deleteInterestCategoryWithHttpInfo($list_id, $interest_category_id);
     }
@@ -241,7 +241,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -250,7 +250,7 @@ class ListsApi
         }
     }
 
-    protected function deleteInterestCategoryRequest($list_id, $interest_category_id)
+    protected function deleteInterestCategoryRequest($list_id, $interest_category_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -275,7 +275,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -283,7 +283,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -359,13 +359,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteInterestCategoryInterest($list_id, $interest_category_id, $interest_id)
+    public function deleteInterestCategoryInterest($list_id, $interest_category_id, $interest_id): void
     {
         $this->deleteInterestCategoryInterestWithHttpInfo($list_id, $interest_category_id, $interest_id);
     }
@@ -399,7 +399,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -408,7 +408,7 @@ class ListsApi
         }
     }
 
-    protected function deleteInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id)
+    protected function deleteInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -439,7 +439,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -447,7 +447,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -455,7 +455,7 @@ class ListsApi
         // path params
         if ($interest_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_id' . '}',
+                '{interest_id}',
                 ObjectSerializer::toPathValue($interest_id),
                 $resourcePath
             );
@@ -531,13 +531,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteListMember($list_id, $subscriber_hash)
+    public function deleteListMember($list_id, $subscriber_hash): void
     {
         $this->deleteListMemberWithHttpInfo($list_id, $subscriber_hash);
     }
@@ -571,7 +571,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -580,7 +580,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListMemberRequest($list_id, $subscriber_hash)
+    protected function deleteListMemberRequest($list_id, $subscriber_hash): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -605,7 +605,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -613,7 +613,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -689,13 +689,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteListMemberNote($list_id, $subscriber_hash, $note_id)
+    public function deleteListMemberNote($list_id, $subscriber_hash, $note_id): void
     {
         $this->deleteListMemberNoteWithHttpInfo($list_id, $subscriber_hash, $note_id);
     }
@@ -729,7 +729,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -738,7 +738,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListMemberNoteRequest($list_id, $subscriber_hash, $note_id)
+    protected function deleteListMemberNoteRequest($list_id, $subscriber_hash, $note_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -769,7 +769,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -777,7 +777,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -785,7 +785,7 @@ class ListsApi
         // path params
         if ($note_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'note_id' . '}',
+                '{note_id}',
                 ObjectSerializer::toPathValue($note_id),
                 $resourcePath
             );
@@ -861,13 +861,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteListMergeField($list_id, $merge_id)
+    public function deleteListMergeField($list_id, $merge_id): void
     {
         $this->deleteListMergeFieldWithHttpInfo($list_id, $merge_id);
     }
@@ -901,7 +901,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -910,7 +910,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListMergeFieldRequest($list_id, $merge_id)
+    protected function deleteListMergeFieldRequest($list_id, $merge_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -935,7 +935,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -943,7 +943,7 @@ class ListsApi
         // path params
         if ($merge_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'merge_id' . '}',
+                '{merge_id}',
                 ObjectSerializer::toPathValue($merge_id),
                 $resourcePath
             );
@@ -1019,13 +1019,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteSegment($list_id, $segment_id)
+    public function deleteSegment($list_id, $segment_id): void
     {
         $this->deleteSegmentWithHttpInfo($list_id, $segment_id);
     }
@@ -1059,7 +1059,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1068,7 +1068,7 @@ class ListsApi
         }
     }
 
-    protected function deleteSegmentRequest($list_id, $segment_id)
+    protected function deleteSegmentRequest($list_id, $segment_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -1093,7 +1093,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -1101,7 +1101,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -1177,13 +1177,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function removeSegmentMember($list_id, $segment_id, $subscriber_hash)
+    public function removeSegmentMember($list_id, $segment_id, $subscriber_hash): void
     {
         $this->removeSegmentMemberWithHttpInfo($list_id, $segment_id, $subscriber_hash);
     }
@@ -1217,7 +1217,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1226,7 +1226,7 @@ class ListsApi
         }
     }
 
-    protected function removeSegmentMemberRequest($list_id, $segment_id, $subscriber_hash)
+    protected function removeSegmentMemberRequest($list_id, $segment_id, $subscriber_hash): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -1257,7 +1257,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -1265,7 +1265,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -1273,7 +1273,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -1349,13 +1349,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteListWebhook($list_id, $webhook_id)
+    public function deleteListWebhook($list_id, $webhook_id): void
     {
         $this->deleteListWebhookWithHttpInfo($list_id, $webhook_id);
     }
@@ -1389,7 +1389,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1398,7 +1398,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListWebhookRequest($list_id, $webhook_id)
+    protected function deleteListWebhookRequest($list_id, $webhook_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -1423,7 +1423,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -1431,7 +1431,7 @@ class ListsApi
         // path params
         if ($webhook_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'webhook_id' . '}',
+                '{webhook_id}',
                 ObjectSerializer::toPathValue($webhook_id),
                 $resourcePath
             );
@@ -1507,7 +1507,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1548,7 +1548,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1557,7 +1557,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberTagsRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getListMemberTagsRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -1585,15 +1585,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1608,7 +1606,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -1616,7 +1614,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -1692,7 +1690,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1733,7 +1731,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1742,7 +1740,7 @@ class ListsApi
         }
     }
 
-    protected function getAllListsRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $before_date_created = null, $since_date_created = null, $before_campaign_last_sent = null, $since_campaign_last_sent = null, $email = null, $sort_field = null, $sort_dir = null, $has_ecommerce_store = null, $include_total_contacts = null)
+    protected function getAllListsRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $before_date_created = null, $since_date_created = null, $before_campaign_last_sent = null, $since_campaign_last_sent = null, $email = null, $sort_field = null, $sort_dir = null, $has_ecommerce_store = null, $include_total_contacts = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling ListsApi., must be smaller than or equal to 1000.');
@@ -1758,15 +1756,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1885,7 +1881,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1926,7 +1922,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1935,7 +1931,7 @@ class ListsApi
         }
     }
 
-    protected function getListRequest($list_id, $fields = null, $exclude_fields = null, $include_total_contacts = null)
+    protected function getListRequest($list_id, $fields = null, $exclude_fields = null, $include_total_contacts = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -1953,15 +1949,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -1972,7 +1966,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2048,7 +2042,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2089,7 +2083,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2098,7 +2092,7 @@ class ListsApi
         }
     }
 
-    protected function getListAbuseReportsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getListAbuseReportsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2120,15 +2114,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2143,7 +2135,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2219,7 +2211,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2260,7 +2252,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2269,7 +2261,7 @@ class ListsApi
         }
     }
 
-    protected function getListAbuseReportDetailsRequest($list_id, $report_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getListAbuseReportDetailsRequest($list_id, $report_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2297,15 +2289,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2320,7 +2310,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2328,7 +2318,7 @@ class ListsApi
         // path params
         if ($report_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'report_id' . '}',
+                '{report_id}',
                 ObjectSerializer::toPathValue($report_id),
                 $resourcePath
             );
@@ -2404,7 +2394,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2445,7 +2435,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2454,7 +2444,7 @@ class ListsApi
         }
     }
 
-    protected function getListRecentActivityRequest($list_id, $count = '10', $offset = '0', $fields = null, $exclude_fields = null)
+    protected function getListRecentActivityRequest($list_id, $count = '10', $offset = '0', $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2484,22 +2474,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2575,7 +2563,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2616,7 +2604,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2625,7 +2613,7 @@ class ListsApi
         }
     }
 
-    protected function getListClientsRequest($list_id, $fields = null, $exclude_fields = null)
+    protected function getListClientsRequest($list_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2643,22 +2631,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2734,7 +2720,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2775,7 +2761,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2784,7 +2770,7 @@ class ListsApi
         }
     }
 
-    protected function getListGrowthHistoryRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null)
+    protected function getListGrowthHistoryRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2806,15 +2792,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -2837,7 +2821,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -2913,7 +2897,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2954,7 +2938,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2963,7 +2947,7 @@ class ListsApi
         }
     }
 
-    protected function getListGrowthHistoryByMonthRequest($list_id, $month, $fields = null, $exclude_fields = null)
+    protected function getListGrowthHistoryByMonthRequest($list_id, $month, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -2987,22 +2971,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3010,7 +2992,7 @@ class ListsApi
         // path params
         if ($month !== null) {
             $resourcePath = str_replace(
-                '{' . 'month' . '}',
+                '{month}',
                 ObjectSerializer::toPathValue($month),
                 $resourcePath
             );
@@ -3086,7 +3068,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3127,7 +3109,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3136,7 +3118,7 @@ class ListsApi
         }
     }
 
-    protected function getListInterestCategoriesRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null)
+    protected function getListInterestCategoriesRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -3158,15 +3140,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -3185,7 +3165,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3261,7 +3241,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3302,7 +3282,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3311,7 +3291,7 @@ class ListsApi
         }
     }
 
-    protected function getInterestCategoryRequest($list_id, $interest_category_id, $fields = null, $exclude_fields = null)
+    protected function getInterestCategoryRequest($list_id, $interest_category_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -3335,22 +3315,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3358,7 +3336,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -3434,7 +3412,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3475,7 +3453,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3484,7 +3462,7 @@ class ListsApi
         }
     }
 
-    protected function listInterestCategoryInterestsRequest($list_id, $interest_category_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function listInterestCategoryInterestsRequest($list_id, $interest_category_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -3512,15 +3490,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -3535,7 +3511,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3543,7 +3519,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -3619,7 +3595,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3660,7 +3636,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3669,7 +3645,7 @@ class ListsApi
         }
     }
 
-    protected function getInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id, $fields = null, $exclude_fields = null)
+    protected function getInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -3699,22 +3675,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3722,7 +3696,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -3730,7 +3704,7 @@ class ListsApi
         // path params
         if ($interest_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_id' . '}',
+                '{interest_id}',
                 ObjectSerializer::toPathValue($interest_id),
                 $resourcePath
             );
@@ -3806,7 +3780,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -3847,7 +3821,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -3856,7 +3830,7 @@ class ListsApi
         }
     }
 
-    protected function getListLocationsRequest($list_id, $fields = null, $exclude_fields = null)
+    protected function getListLocationsRequest($list_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -3874,22 +3848,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -3965,7 +3937,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4006,7 +3978,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4015,7 +3987,7 @@ class ListsApi
         }
     }
 
-    protected function getListMembersInfoRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $email_type = null, $status = null, $since_timestamp_opt = null, $before_timestamp_opt = null, $since_last_changed = null, $before_last_changed = null, $unique_email_id = null, $vip_only = null, $interest_category_id = null, $interest_ids = null, $interest_match = null, $sort_field = null, $sort_dir = null, $since_last_campaign = null, $unsubscribed_since = null)
+    protected function getListMembersInfoRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $email_type = null, $status = null, $since_timestamp_opt = null, $before_timestamp_opt = null, $since_last_changed = null, $before_last_changed = null, $unique_email_id = null, $vip_only = null, $interest_category_id = null, $interest_ids = null, $interest_match = null, $sort_field = null, $sort_dir = null, $since_last_campaign = null, $unsubscribed_since = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -4037,15 +4009,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -4120,7 +4090,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -4196,7 +4166,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4237,7 +4207,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4246,7 +4216,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null)
+    protected function getListMemberRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -4270,22 +4240,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -4293,7 +4261,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -4369,7 +4337,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4410,7 +4378,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4419,7 +4387,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberActivityRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $action = null)
+    protected function getListMemberActivityRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $action = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -4443,29 +4411,26 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
         if (is_array($action)) {
             $queryParams['action'] = ObjectSerializer::serializeCollection($action, 'csv');
-        } else
-        if ($action !== null) {
+        } elseif ($action !== null) {
             $queryParams['action'] = ObjectSerializer::toQueryValue($action);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -4473,7 +4438,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -4549,7 +4514,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4590,7 +4555,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4599,7 +4564,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberActivityFeedRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $activity_filters = null)
+    protected function getListMemberActivityFeedRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $activity_filters = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -4627,15 +4592,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -4649,15 +4612,14 @@ class ListsApi
         // query params
         if (is_array($activity_filters)) {
             $queryParams['activity_filters'] = ObjectSerializer::serializeCollection($activity_filters, 'csv');
-        } else
-        if ($activity_filters !== null) {
+        } elseif ($activity_filters !== null) {
             $queryParams['activity_filters'] = ObjectSerializer::toQueryValue($activity_filters);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -4665,7 +4627,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -4741,7 +4703,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4782,7 +4744,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4791,7 +4753,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberEventsRequest($list_id, $subscriber_hash, $count = '10', $offset = '0', $fields = null, $exclude_fields = null)
+    protected function getListMemberEventsRequest($list_id, $subscriber_hash, $count = '10', $offset = '0', $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -4827,22 +4789,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -4850,7 +4810,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -4926,7 +4886,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -4967,7 +4927,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -4976,7 +4936,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberGoalsRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null)
+    protected function getListMemberGoalsRequest($list_id, $subscriber_hash, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5000,22 +4960,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5023,7 +4981,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -5099,7 +5057,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5140,7 +5098,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5149,7 +5107,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberNotesRequest($list_id, $subscriber_hash, $sort_field = null, $sort_dir = null, $fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function getListMemberNotesRequest($list_id, $subscriber_hash, $sort_field = null, $sort_dir = null, $fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5185,15 +5143,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -5208,7 +5164,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5216,7 +5172,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -5292,7 +5248,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5333,7 +5289,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5342,7 +5298,7 @@ class ListsApi
         }
     }
 
-    protected function getListMemberNoteRequest($list_id, $subscriber_hash, $note_id, $fields = null, $exclude_fields = null)
+    protected function getListMemberNoteRequest($list_id, $subscriber_hash, $note_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5372,22 +5328,20 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5395,7 +5349,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -5403,7 +5357,7 @@ class ListsApi
         // path params
         if ($note_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'note_id' . '}',
+                '{note_id}',
                 ObjectSerializer::toPathValue($note_id),
                 $resourcePath
             );
@@ -5479,7 +5433,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5520,7 +5474,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5529,7 +5483,7 @@ class ListsApi
         }
     }
 
-    protected function getListMergeFieldsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $required = null)
+    protected function getListMergeFieldsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $required = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5551,15 +5505,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -5582,7 +5534,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5658,7 +5610,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5699,7 +5651,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5708,7 +5660,7 @@ class ListsApi
         }
     }
 
-    protected function getListMergeFieldRequest($list_id, $merge_id, $exclude_fields = null, $fields = null)
+    protected function getListMergeFieldRequest($list_id, $merge_id, $exclude_fields = null, $fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5732,22 +5684,20 @@ class ListsApi
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
 
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5755,7 +5705,7 @@ class ListsApi
         // path params
         if ($merge_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'merge_id' . '}',
+                '{merge_id}',
                 ObjectSerializer::toPathValue($merge_id),
                 $resourcePath
             );
@@ -5831,7 +5781,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -5872,7 +5822,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -5881,7 +5831,7 @@ class ListsApi
         }
     }
 
-    protected function getSegmentRequest($list_id, $segment_id, $fields = null, $exclude_fields = null, $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null)
+    protected function getSegmentRequest($list_id, $segment_id, $fields = null, $exclude_fields = null, $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -5905,15 +5855,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -5932,7 +5880,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -5940,7 +5888,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -6016,7 +5964,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6057,7 +6005,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6066,7 +6014,7 @@ class ListsApi
         }
     }
 
-    protected function getSegmentMembersListRequest($list_id, $segment_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null)
+    protected function getSegmentMembersListRequest($list_id, $segment_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6094,15 +6042,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -6129,7 +6075,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6137,7 +6083,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -6213,7 +6159,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6254,7 +6200,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6263,7 +6209,7 @@ class ListsApi
         }
     }
 
-    protected function getListSignupFormsRequest($list_id)
+    protected function getListSignupFormsRequest($list_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6282,7 +6228,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6358,13 +6304,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function getAllSurveysForList($list_id)
+    public function getAllSurveysForList($list_id): void
     {
         $this->getAllSurveysForListWithHttpInfo($list_id);
     }
@@ -6398,7 +6344,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6407,7 +6353,7 @@ class ListsApi
         }
     }
 
-    protected function getAllSurveysForListRequest($list_id)
+    protected function getAllSurveysForListRequest($list_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6426,7 +6372,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6502,13 +6448,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function getSurvey($list_id, $survey_id)
+    public function getSurvey($list_id, $survey_id): void
     {
         $this->getSurveyWithHttpInfo($list_id, $survey_id);
     }
@@ -6542,7 +6488,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6551,7 +6497,7 @@ class ListsApi
         }
     }
 
-    protected function getSurveyRequest($list_id, $survey_id)
+    protected function getSurveyRequest($list_id, $survey_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6576,7 +6522,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6584,7 +6530,7 @@ class ListsApi
         // path params
         if ($survey_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'survey_id' . '}',
+                '{survey_id}',
                 ObjectSerializer::toPathValue($survey_id),
                 $resourcePath
             );
@@ -6660,7 +6606,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6701,7 +6647,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6710,7 +6656,7 @@ class ListsApi
         }
     }
 
-    protected function getListWebhooksRequest($list_id)
+    protected function getListWebhooksRequest($list_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6729,7 +6675,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6805,7 +6751,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -6846,7 +6792,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -6855,7 +6801,7 @@ class ListsApi
         }
     }
 
-    protected function getListWebhookRequest($list_id, $webhook_id)
+    protected function getListWebhookRequest($list_id, $webhook_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -6880,7 +6826,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -6888,7 +6834,7 @@ class ListsApi
         // path params
         if ($webhook_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'webhook_id' . '}',
+                '{webhook_id}',
                 ObjectSerializer::toPathValue($webhook_id),
                 $resourcePath
             );
@@ -6964,7 +6910,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7005,7 +6951,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7014,7 +6960,7 @@ class ListsApi
         }
     }
 
-    protected function updateListRequest($list_id, $body)
+    protected function updateListRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7039,7 +6985,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7118,7 +7064,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7159,7 +7105,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7168,7 +7114,7 @@ class ListsApi
         }
     }
 
-    protected function updateInterestCategoryRequest($list_id, $interest_category_id, $body)
+    protected function updateInterestCategoryRequest($list_id, $interest_category_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7199,7 +7145,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7207,7 +7153,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -7286,7 +7232,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7327,7 +7273,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7336,7 +7282,7 @@ class ListsApi
         }
     }
 
-    protected function updateInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id, $body)
+    protected function updateInterestCategoryInterestRequest($list_id, $interest_category_id, $interest_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7373,7 +7319,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7381,7 +7327,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -7389,7 +7335,7 @@ class ListsApi
         // path params
         if ($interest_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_id' . '}',
+                '{interest_id}',
                 ObjectSerializer::toPathValue($interest_id),
                 $resourcePath
             );
@@ -7468,7 +7414,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7509,7 +7455,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7518,7 +7464,7 @@ class ListsApi
         }
     }
 
-    protected function updateListMemberRequest($list_id, $subscriber_hash, $body, $skip_merge_validation = null)
+    protected function updateListMemberRequest($list_id, $subscriber_hash, $body, $skip_merge_validation = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7553,7 +7499,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7561,7 +7507,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -7640,7 +7586,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7681,7 +7627,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7690,7 +7636,7 @@ class ListsApi
         }
     }
 
-    protected function updateListMemberNoteRequest($list_id, $subscriber_hash, $note_id, $body)
+    protected function updateListMemberNoteRequest($list_id, $subscriber_hash, $note_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7727,7 +7673,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7735,7 +7681,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -7743,7 +7689,7 @@ class ListsApi
         // path params
         if ($note_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'note_id' . '}',
+                '{note_id}',
                 ObjectSerializer::toPathValue($note_id),
                 $resourcePath
             );
@@ -7822,7 +7768,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -7863,7 +7809,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -7872,7 +7818,7 @@ class ListsApi
         }
     }
 
-    protected function updateListMergeFieldRequest($list_id, $merge_id, $body)
+    protected function updateListMergeFieldRequest($list_id, $merge_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -7903,7 +7849,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -7911,7 +7857,7 @@ class ListsApi
         // path params
         if ($merge_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'merge_id' . '}',
+                '{merge_id}',
                 ObjectSerializer::toPathValue($merge_id),
                 $resourcePath
             );
@@ -7990,7 +7936,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8031,7 +7977,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8040,7 +7986,7 @@ class ListsApi
         }
     }
 
-    protected function updateSegmentRequest($list_id, $segment_id, $body)
+    protected function updateSegmentRequest($list_id, $segment_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -8071,7 +8017,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -8079,7 +8025,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -8158,7 +8104,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8199,7 +8145,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8208,7 +8154,7 @@ class ListsApi
         }
     }
 
-    protected function updateListWebhookRequest($list_id, $webhook_id, $body)
+    protected function updateListWebhookRequest($list_id, $webhook_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -8239,7 +8185,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -8247,7 +8193,7 @@ class ListsApi
         // path params
         if ($webhook_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'webhook_id' . '}',
+                '{webhook_id}',
                 ObjectSerializer::toPathValue($webhook_id),
                 $resourcePath
             );
@@ -8326,13 +8272,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function createListMemberEvent($list_id, $subscriber_hash, $body)
+    public function createListMemberEvent($list_id, $subscriber_hash, $body): void
     {
         $this->createListMemberEventWithHttpInfo($list_id, $subscriber_hash, $body);
     }
@@ -8366,7 +8312,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8375,7 +8321,7 @@ class ListsApi
         }
     }
 
-    protected function createListMemberEventRequest($list_id, $subscriber_hash, $body)
+    protected function createListMemberEventRequest($list_id, $subscriber_hash, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -8406,7 +8352,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -8414,7 +8360,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -8493,13 +8439,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function updateListMemberTags($list_id, $subscriber_hash, $body)
+    public function updateListMemberTags($list_id, $subscriber_hash, $body): void
     {
         $this->updateListMemberTagsWithHttpInfo($list_id, $subscriber_hash, $body);
     }
@@ -8533,7 +8479,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8542,7 +8488,7 @@ class ListsApi
         }
     }
 
-    protected function updateListMemberTagsRequest($list_id, $subscriber_hash, $body)
+    protected function updateListMemberTagsRequest($list_id, $subscriber_hash, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -8573,7 +8519,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -8581,7 +8527,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -8660,7 +8606,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8701,7 +8647,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8710,7 +8656,7 @@ class ListsApi
         }
     }
 
-    protected function createListRequest($body)
+    protected function createListRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -8800,7 +8746,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -8841,7 +8787,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -8850,7 +8796,7 @@ class ListsApi
         }
     }
 
-    protected function batchListMembersRequest($list_id, $body, $skip_merge_validation = null, $skip_duplicate_check = null)
+    protected function batchListMembersRequest($list_id, $body, $skip_merge_validation = null, $skip_duplicate_check = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -8883,7 +8829,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -8962,7 +8908,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9003,7 +8949,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9012,7 +8958,7 @@ class ListsApi
         }
     }
 
-    protected function createListInterestCategoryRequest($list_id, $body)
+    protected function createListInterestCategoryRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9037,7 +8983,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9116,7 +9062,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9157,7 +9103,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9166,7 +9112,7 @@ class ListsApi
         }
     }
 
-    protected function createInterestCategoryInterestRequest($list_id, $interest_category_id, $body)
+    protected function createInterestCategoryInterestRequest($list_id, $interest_category_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9197,7 +9143,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9205,7 +9151,7 @@ class ListsApi
         // path params
         if ($interest_category_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'interest_category_id' . '}',
+                '{interest_category_id}',
                 ObjectSerializer::toPathValue($interest_category_id),
                 $resourcePath
             );
@@ -9284,7 +9230,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9325,7 +9271,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9334,7 +9280,7 @@ class ListsApi
         }
     }
 
-    protected function addListMemberRequest($list_id, $body, $skip_merge_validation = null)
+    protected function addListMemberRequest($list_id, $body, $skip_merge_validation = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9363,7 +9309,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9442,13 +9388,13 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteListMemberPermanent($list_id, $subscriber_hash)
+    public function deleteListMemberPermanent($list_id, $subscriber_hash): void
     {
         $this->deleteListMemberPermanentWithHttpInfo($list_id, $subscriber_hash);
     }
@@ -9482,7 +9428,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9491,7 +9437,7 @@ class ListsApi
         }
     }
 
-    protected function deleteListMemberPermanentRequest($list_id, $subscriber_hash)
+    protected function deleteListMemberPermanentRequest($list_id, $subscriber_hash): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9516,7 +9462,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9524,7 +9470,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -9600,7 +9546,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9641,7 +9587,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9650,7 +9596,7 @@ class ListsApi
         }
     }
 
-    protected function createListMemberNoteRequest($list_id, $subscriber_hash, $body)
+    protected function createListMemberNoteRequest($list_id, $subscriber_hash, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9681,7 +9627,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9689,7 +9635,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -9768,7 +9714,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9809,7 +9755,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9818,7 +9764,7 @@ class ListsApi
         }
     }
 
-    protected function addListMergeFieldRequest($list_id, $body)
+    protected function addListMergeFieldRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9843,7 +9789,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -9922,7 +9868,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -9963,7 +9909,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -9972,7 +9918,7 @@ class ListsApi
         }
     }
 
-    protected function createSegmentRequest($list_id, $body)
+    protected function createSegmentRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -9997,7 +9943,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10076,7 +10022,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10117,7 +10063,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10126,7 +10072,7 @@ class ListsApi
         }
     }
 
-    protected function batchSegmentMembersRequest($body, $list_id, $segment_id)
+    protected function batchSegmentMembersRequest($body, $list_id, $segment_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -10157,7 +10103,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10165,7 +10111,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -10244,7 +10190,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10285,7 +10231,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10294,7 +10240,7 @@ class ListsApi
         }
     }
 
-    protected function createSegmentMemberRequest($list_id, $segment_id, $body)
+    protected function createSegmentMemberRequest($list_id, $segment_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -10325,7 +10271,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10333,7 +10279,7 @@ class ListsApi
         // path params
         if ($segment_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'segment_id' . '}',
+                '{segment_id}',
                 ObjectSerializer::toPathValue($segment_id),
                 $resourcePath
             );
@@ -10412,7 +10358,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10453,7 +10399,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10462,7 +10408,7 @@ class ListsApi
         }
     }
 
-    protected function updateListSignupFormRequest($list_id, $body)
+    protected function updateListSignupFormRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -10487,7 +10433,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10566,7 +10512,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10607,7 +10553,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10616,7 +10562,7 @@ class ListsApi
         }
     }
 
-    protected function createListWebhookRequest($list_id, $body)
+    protected function createListWebhookRequest($list_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -10641,7 +10587,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10720,7 +10666,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10761,7 +10707,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10770,7 +10716,7 @@ class ListsApi
         }
     }
 
-    protected function listSegmentsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $since_created_at = null, $before_created_at = null, $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null, $since_updated_at = null, $before_updated_at = null)
+    protected function listSegmentsRequest($list_id, $fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $since_created_at = null, $before_created_at = null, $include_cleaned = null, $include_transactional = null, $include_unsubscribed = null, $since_updated_at = null, $before_updated_at = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -10792,15 +10738,13 @@ class ListsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -10847,7 +10791,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -10923,7 +10867,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -10964,7 +10908,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -10973,7 +10917,7 @@ class ListsApi
         }
     }
 
-    protected function setListMemberRequest($list_id, $subscriber_hash, $body, $skip_merge_validation = null)
+    protected function setListMemberRequest($list_id, $subscriber_hash, $body, $skip_merge_validation = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -11008,7 +10952,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -11016,7 +10960,7 @@ class ListsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -11095,7 +11039,7 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'PUT',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -11136,7 +11080,7 @@ class ListsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -11145,7 +11089,7 @@ class ListsApi
         }
     }
 
-    protected function tagSearchRequest($list_id, $name = null)
+    protected function tagSearchRequest($list_id, $name = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -11168,7 +11112,7 @@ class ListsApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -11244,13 +11188,16 @@ class ListsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

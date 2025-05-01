@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class SurveysApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,12 +58,12 @@ class SurveysApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
 
-    public function publishSurvey($list_id, $survey_id)
+    public function publishSurvey($list_id, $survey_id): void
     {
         $this->publishSurveyWithHttpInfo($list_id, $survey_id);
     }
@@ -97,7 +97,7 @@ class SurveysApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -106,7 +106,7 @@ class SurveysApi
         }
     }
 
-    protected function publishSurveyRequest($list_id, $survey_id)
+    protected function publishSurveyRequest($list_id, $survey_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -131,7 +131,7 @@ class SurveysApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -139,7 +139,7 @@ class SurveysApi
         // path params
         if ($survey_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'survey_id' . '}',
+                '{survey_id}',
                 ObjectSerializer::toPathValue($survey_id),
                 $resourcePath
             );
@@ -215,13 +215,13 @@ class SurveysApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function unpublishSurvey($list_id, $survey_id)
+    public function unpublishSurvey($list_id, $survey_id): void
     {
         $this->unpublishSurveyWithHttpInfo($list_id, $survey_id);
     }
@@ -255,7 +255,7 @@ class SurveysApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -264,7 +264,7 @@ class SurveysApi
         }
     }
 
-    protected function unpublishSurveyRequest($list_id, $survey_id)
+    protected function unpublishSurveyRequest($list_id, $survey_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'list_id' is set
         if ($list_id === null || (is_array($list_id) && count($list_id) === 0)) {
@@ -289,7 +289,7 @@ class SurveysApi
         // path params
         if ($list_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'list_id' . '}',
+                '{list_id}',
                 ObjectSerializer::toPathValue($list_id),
                 $resourcePath
             );
@@ -297,7 +297,7 @@ class SurveysApi
         // path params
         if ($survey_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'survey_id' . '}',
+                '{survey_id}',
                 ObjectSerializer::toPathValue($survey_id),
                 $resourcePath
             );
@@ -373,13 +373,16 @@ class SurveysApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

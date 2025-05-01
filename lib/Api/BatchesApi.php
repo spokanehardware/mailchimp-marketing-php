@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class BatchesApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,12 +58,12 @@ class BatchesApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
 
-    public function deleteRequest($batch_id)
+    public function deleteRequest($batch_id): void
     {
         $this->deleteRequestWithHttpInfo($batch_id);
     }
@@ -97,7 +97,7 @@ class BatchesApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -106,7 +106,7 @@ class BatchesApi
         }
     }
 
-    protected function deleteRequestRequest($batch_id)
+    protected function deleteRequestRequest($batch_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'batch_id' is set
         if ($batch_id === null || (is_array($batch_id) && count($batch_id) === 0)) {
@@ -125,7 +125,7 @@ class BatchesApi
         // path params
         if ($batch_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'batch_id' . '}',
+                '{batch_id}',
                 ObjectSerializer::toPathValue($batch_id),
                 $resourcePath
             );
@@ -201,7 +201,7 @@ class BatchesApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -242,7 +242,7 @@ class BatchesApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -251,7 +251,7 @@ class BatchesApi
         }
     }
 
-    protected function listRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    protected function listRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0'): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling BatchesApi., must be smaller than or equal to 1000.');
@@ -267,15 +267,13 @@ class BatchesApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -358,7 +356,7 @@ class BatchesApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -399,7 +397,7 @@ class BatchesApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -408,7 +406,7 @@ class BatchesApi
         }
     }
 
-    protected function statusRequest($batch_id, $fields = null, $exclude_fields = null)
+    protected function statusRequest($batch_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'batch_id' is set
         if ($batch_id === null || (is_array($batch_id) && count($batch_id) === 0)) {
@@ -426,22 +424,20 @@ class BatchesApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($batch_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'batch_id' . '}',
+                '{batch_id}',
                 ObjectSerializer::toPathValue($batch_id),
                 $resourcePath
             );
@@ -517,7 +513,7 @@ class BatchesApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -558,7 +554,7 @@ class BatchesApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -567,7 +563,7 @@ class BatchesApi
         }
     }
 
-    protected function startRequest($body)
+    protected function startRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -657,13 +653,16 @@ class BatchesApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

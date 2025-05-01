@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class CustomerJourneysApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,7 +58,7 @@ class CustomerJourneysApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
@@ -98,7 +98,7 @@ class CustomerJourneysApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -107,7 +107,7 @@ class CustomerJourneysApi
         }
     }
 
-    protected function triggerRequest($journey_id, $step_id, $body)
+    protected function triggerRequest($journey_id, $step_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'journey_id' is set
         if ($journey_id === null || (is_array($journey_id) && count($journey_id) === 0)) {
@@ -138,7 +138,7 @@ class CustomerJourneysApi
         // path params
         if ($journey_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'journey_id' . '}',
+                '{journey_id}',
                 ObjectSerializer::toPathValue($journey_id),
                 $resourcePath
             );
@@ -146,7 +146,7 @@ class CustomerJourneysApi
         // path params
         if ($step_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'step_id' . '}',
+                '{step_id}',
                 ObjectSerializer::toPathValue($step_id),
                 $resourcePath
             );
@@ -225,13 +225,16 @@ class CustomerJourneysApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

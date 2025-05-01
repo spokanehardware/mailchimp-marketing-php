@@ -43,11 +43,11 @@ use MailchimpMarketing\ObjectSerializer;
 
 class AutomationsApi
 {
-    protected $client;
-    protected $config;
-    protected $headerSelector;
+    protected \GuzzleHttp\Client $client;
+    protected \MailchimpMarketing\Configuration $config;
+    protected \MailchimpMarketing\HeaderSelector $headerSelector;
 
-    public function __construct(Configuration $config = null)
+    public function __construct(?Configuration $config = null)
     {
         $this->client = new Client([
             'defaults' => [
@@ -58,12 +58,12 @@ class AutomationsApi
         $this->config = $config ?: new Configuration();
     }
 
-    public function getConfig()
+    public function getConfig(): \MailchimpMarketing\Configuration
     {
         return $this->config;
     }
 
-    public function archive($workflow_id)
+    public function archive($workflow_id): void
     {
         $this->archiveWithHttpInfo($workflow_id);
     }
@@ -97,7 +97,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -106,7 +106,7 @@ class AutomationsApi
         }
     }
 
-    protected function archiveRequest($workflow_id)
+    protected function archiveRequest($workflow_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -125,7 +125,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -201,13 +201,13 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function deleteWorkflowEmail($workflow_id, $workflow_email_id)
+    public function deleteWorkflowEmail($workflow_id, $workflow_email_id): void
     {
         $this->deleteWorkflowEmailWithHttpInfo($workflow_id, $workflow_email_id);
     }
@@ -241,7 +241,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -250,7 +250,7 @@ class AutomationsApi
         }
     }
 
-    protected function deleteWorkflowEmailRequest($workflow_id, $workflow_email_id)
+    protected function deleteWorkflowEmailRequest($workflow_id, $workflow_email_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -275,7 +275,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -283,7 +283,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -359,7 +359,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -400,7 +400,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -409,7 +409,7 @@ class AutomationsApi
         }
     }
 
-    protected function listRequest($count = '10', $offset = '0', $fields = null, $exclude_fields = null, $before_create_time = null, $since_create_time = null, $before_start_time = null, $since_start_time = null, $status = null)
+    protected function listRequest($count = '10', $offset = '0', $fields = null, $exclude_fields = null, $before_create_time = null, $since_create_time = null, $before_start_time = null, $since_start_time = null, $status = null): \GuzzleHttp\Psr7\Request
     {
         if ($count !== null && $count > 1000) {
             throw new \InvalidArgumentException('invalid value for "$count" when calling AutomationsApi., must be smaller than or equal to 1000.');
@@ -433,15 +433,13 @@ class AutomationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
         // query params
@@ -536,7 +534,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -577,7 +575,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -586,7 +584,7 @@ class AutomationsApi
         }
     }
 
-    protected function getRequest($workflow_id, $fields = null, $exclude_fields = null)
+    protected function getRequest($workflow_id, $fields = null, $exclude_fields = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -604,22 +602,20 @@ class AutomationsApi
         // query params
         if (is_array($fields)) {
             $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
-        } else
-        if ($fields !== null) {
+        } elseif ($fields !== null) {
             $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
         }
         // query params
         if (is_array($exclude_fields)) {
             $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
-        } else
-        if ($exclude_fields !== null) {
+        } elseif ($exclude_fields !== null) {
             $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
         }
 
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -695,7 +691,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -736,7 +732,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -745,7 +741,7 @@ class AutomationsApi
         }
     }
 
-    protected function listAllWorkflowEmailsRequest($workflow_id)
+    protected function listAllWorkflowEmailsRequest($workflow_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -764,7 +760,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -840,7 +836,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -881,7 +877,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -890,7 +886,7 @@ class AutomationsApi
         }
     }
 
-    protected function getWorkflowEmailRequest($workflow_id, $workflow_email_id)
+    protected function getWorkflowEmailRequest($workflow_id, $workflow_email_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -915,7 +911,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -923,7 +919,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -999,7 +995,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1040,7 +1036,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1049,7 +1045,7 @@ class AutomationsApi
         }
     }
 
-    protected function getWorkflowEmailSubscriberQueueRequest($workflow_id, $workflow_email_id)
+    protected function getWorkflowEmailSubscriberQueueRequest($workflow_id, $workflow_email_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -1074,7 +1070,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -1082,7 +1078,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -1158,7 +1154,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1199,7 +1195,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1208,7 +1204,7 @@ class AutomationsApi
         }
     }
 
-    protected function getWorkflowEmailSubscriberRequest($workflow_id, $workflow_email_id, $subscriber_hash)
+    protected function getWorkflowEmailSubscriberRequest($workflow_id, $workflow_email_id, $subscriber_hash): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -1239,7 +1235,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -1247,7 +1243,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -1255,7 +1251,7 @@ class AutomationsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -1331,7 +1327,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1372,7 +1368,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1381,7 +1377,7 @@ class AutomationsApi
         }
     }
 
-    protected function listWorkflowEmailSubscribersRemovedRequest($workflow_id)
+    protected function listWorkflowEmailSubscribersRemovedRequest($workflow_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -1400,7 +1396,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -1476,7 +1472,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1517,7 +1513,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1526,7 +1522,7 @@ class AutomationsApi
         }
     }
 
-    protected function getRemovedWorkflowEmailSubscriberRequest($workflow_id, $subscriber_hash)
+    protected function getRemovedWorkflowEmailSubscriberRequest($workflow_id, $subscriber_hash): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -1551,7 +1547,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -1559,7 +1555,7 @@ class AutomationsApi
         // path params
         if ($subscriber_hash !== null) {
             $resourcePath = str_replace(
-                '{' . 'subscriber_hash' . '}',
+                '{subscriber_hash}',
                 ObjectSerializer::toPathValue($subscriber_hash),
                 $resourcePath
             );
@@ -1635,7 +1631,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1676,7 +1672,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1685,7 +1681,7 @@ class AutomationsApi
         }
     }
 
-    protected function updateWorkflowEmailRequest($workflow_id, $workflow_email_id, $body)
+    protected function updateWorkflowEmailRequest($workflow_id, $workflow_email_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -1716,7 +1712,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -1724,7 +1720,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -1803,7 +1799,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -1844,7 +1840,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1853,7 +1849,7 @@ class AutomationsApi
         }
     }
 
-    protected function createRequest($body)
+    protected function createRequest($body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
@@ -1943,13 +1939,13 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function pauseAllEmails($workflow_id)
+    public function pauseAllEmails($workflow_id): void
     {
         $this->pauseAllEmailsWithHttpInfo($workflow_id);
     }
@@ -1983,7 +1979,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -1992,7 +1988,7 @@ class AutomationsApi
         }
     }
 
-    protected function pauseAllEmailsRequest($workflow_id)
+    protected function pauseAllEmailsRequest($workflow_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2011,7 +2007,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2087,13 +2083,13 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function startAllEmails($workflow_id)
+    public function startAllEmails($workflow_id): void
     {
         $this->startAllEmailsWithHttpInfo($workflow_id);
     }
@@ -2127,7 +2123,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2136,7 +2132,7 @@ class AutomationsApi
         }
     }
 
-    protected function startAllEmailsRequest($workflow_id)
+    protected function startAllEmailsRequest($workflow_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2155,7 +2151,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2231,13 +2227,13 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function pauseWorkflowEmail($workflow_id, $workflow_email_id)
+    public function pauseWorkflowEmail($workflow_id, $workflow_email_id): void
     {
         $this->pauseWorkflowEmailWithHttpInfo($workflow_id, $workflow_email_id);
     }
@@ -2271,7 +2267,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2280,7 +2276,7 @@ class AutomationsApi
         }
     }
 
-    protected function pauseWorkflowEmailRequest($workflow_id, $workflow_email_id)
+    protected function pauseWorkflowEmailRequest($workflow_id, $workflow_email_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2305,7 +2301,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2313,7 +2309,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -2389,13 +2385,13 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    public function startWorkflowEmail($workflow_id, $workflow_email_id)
+    public function startWorkflowEmail($workflow_id, $workflow_email_id): void
     {
         $this->startWorkflowEmailWithHttpInfo($workflow_id, $workflow_email_id);
     }
@@ -2429,7 +2425,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2438,7 +2434,7 @@ class AutomationsApi
         }
     }
 
-    protected function startWorkflowEmailRequest($workflow_id, $workflow_email_id)
+    protected function startWorkflowEmailRequest($workflow_id, $workflow_email_id): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2463,7 +2459,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2471,7 +2467,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -2547,7 +2543,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2588,7 +2584,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2597,7 +2593,7 @@ class AutomationsApi
         }
     }
 
-    protected function addWorkflowEmailSubscriberRequest($workflow_id, $workflow_email_id, $body)
+    protected function addWorkflowEmailSubscriberRequest($workflow_id, $workflow_email_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2628,7 +2624,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2636,7 +2632,7 @@ class AutomationsApi
         // path params
         if ($workflow_email_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_email_id' . '}',
+                '{workflow_email_id}',
                 ObjectSerializer::toPathValue($workflow_email_id),
                 $resourcePath
             );
@@ -2715,7 +2711,7 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
@@ -2756,7 +2752,7 @@ class AutomationsApi
 
             $responseBody = $response->getBody();
             $content = $responseBody->getContents();
-            $content = json_decode($content);
+            $content = json_decode((string) $content);
 
             return $content;
 
@@ -2765,7 +2761,7 @@ class AutomationsApi
         }
     }
 
-    protected function removeWorkflowEmailSubscriberRequest($workflow_id, $body)
+    protected function removeWorkflowEmailSubscriberRequest($workflow_id, $body): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'workflow_id' is set
         if ($workflow_id === null || (is_array($workflow_id) && count($workflow_id) === 0)) {
@@ -2790,7 +2786,7 @@ class AutomationsApi
         // path params
         if ($workflow_id !== null) {
             $resourcePath = str_replace(
-                '{' . 'workflow_id' . '}',
+                '{workflow_id}',
                 ObjectSerializer::toPathValue($workflow_id),
                 $resourcePath
             );
@@ -2869,13 +2865,16 @@ class AutomationsApi
         $query = Query::build($queryParams);
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
-    protected function createHttpClientOption()
+    /**
+     * @return mixed[]
+     */
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {
